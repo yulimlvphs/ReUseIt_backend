@@ -22,7 +22,7 @@ public class ImageService {
     }
 
     public String getImageById(Long id) {
-        Optional<Image> image = imageRepository.findById(id);
+        Optional<Image> image = imageRepository.findByProductId(id);
         String base64Data = image.map(Image::getBase64Data).orElse("이미지가 없음");
         return base64Data;
     }

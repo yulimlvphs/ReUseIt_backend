@@ -54,8 +54,10 @@ public class productService {
                 dto.setProducts(product);
 
                 // Assuming there's a method to find the image by product ID
-                Optional<String> image = Optional.ofNullable(imageService.getImageById(product.getId()));
-                dto.setImage(String.valueOf(image));
+                Optional<String> imageOptional = Optional.ofNullable(imageService.getImageById(product.getId()));
+                String image = imageOptional.orElse("이미지가 없음");
+
+                dto.setImage(image);;
 
                 dtos.add(dto);
             }
