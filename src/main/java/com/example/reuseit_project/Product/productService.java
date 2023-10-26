@@ -1,16 +1,12 @@
 package com.example.reuseit_project.Product;
-import com.example.reuseit_project.Image.Image;
 import com.example.reuseit_project.Image.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class productService {
@@ -34,7 +30,6 @@ public class productService {
                 byte[] data = file.getBytes();
                 String base64Data = Base64.getEncoder().encodeToString(data);
                 imageService.uploadImage(result.getId(), name, contentType, base64Data); //여기까지 image코드
-                System.out.println("=============================="+result.getId());
             }
 
             return result;
@@ -43,6 +38,7 @@ public class productService {
         }
     }
 
+    // 모든 상품을 반환
     @Transactional(readOnly = true)
     public List<productFindAllDTO> getAllProducts() {
         try {
@@ -68,6 +64,7 @@ public class productService {
         }
     }
 
+    // 하나의 상품을 반환
     @Transactional(readOnly = true)
     public Optional<Product> getProductById(Long id) {
         try {
@@ -77,6 +74,7 @@ public class productService {
         }
     }
 
+    // 상품수정
     @Transactional
     public Product updateProduct(Long id, productDTO dto) {
         try {
@@ -99,7 +97,19 @@ public class productService {
         }
     }
 
+    public List<Product> getProductByCategory(Integer categoryId) { // 카테고리 별 상품제공 매소드
+        Assert.notNull(categoryId, "categoryId cannot be null");
 
+        List<Product> products = productRepository.findAllByCategory(categoryId);
+
+        if (products.isEmpty()) {
+            throw new NoSuchElementException("No products found for categoryId: " + categoryId);
+        }
+
+        return products;
+    }
+
+    // 해당 상품 삭제
     @Transactional
     public void deleteProduct(Long id) {
         try {
