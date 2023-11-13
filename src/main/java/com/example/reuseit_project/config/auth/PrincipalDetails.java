@@ -1,5 +1,4 @@
 package com.example.reuseit_project.config.auth;
-
 import com.example.reuseit_project.model.User;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,9 +18,17 @@ import java.util.Map;
 @Data
 public class PrincipalDetails implements UserDetails, OAuth2User {
     private User user;  //해당 user의 권한을 리턴하는 곳!!
+    private Map<String, Object> attribute; //OAuth2 인증 시 사용자의 속성 정보를 저장하기 위해 선언된 필드
 
+    // 일반 로그인 때 사용하는 생성자
     public PrincipalDetails(User user){
-        this.user=user;
+        this.user = user;
+    }
+
+    //OAuth를 사용하여 로그인하는 생성자
+    public PrincipalDetails(User user, Map<String, Object> attribute){
+        this.user = user;
+        this.attribute = attribute;
     }
 
     @Override
@@ -68,7 +75,6 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
 
     @Override
     public Map<String, Object> getAttributes() {
-        return null;
+        return attribute;
     }
-
 }

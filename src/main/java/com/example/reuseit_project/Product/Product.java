@@ -23,6 +23,21 @@ public class Product {
     @Column(name = "price")
     private Integer price; //상품가격
 
+    @Column(name = "category")
+    private Integer category; // 제품의 카테코리
+
+    @Column(name = "location")
+    private String location; // 상품 거래지역
+
+    @Column(name = "is_used")
+    private Boolean isUsed; // 중고상품인지 아닌지 여부
+
+    @Column(name = "is_exchange")
+    private Boolean isExchange; // 교환여부
+
+    @Column(name = "quantity")
+    private Integer quantity;
+
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -30,9 +45,6 @@ public class Product {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
-    @Column(name = "category")
-    private Integer category;
 
     @Column(name = "is_featured")
     private boolean isFeatured; // isFeatured가 true로 설정된 상품은 웹 사이트에서 주목받는 상품으로 강조
@@ -43,10 +55,11 @@ public class Product {
         this.updatedAt = now;
     }
 
-    public void updateProduct(String productName, String description, Integer price) {
+    public void updateProduct(String productName, String description, Integer price, String location) {
         this.productName = productName;
         this.description = description;
         this.price = price;
+        this.location = location;
         this.updatedAt = LocalDateTime.now();
     }
 }

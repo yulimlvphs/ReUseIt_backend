@@ -9,10 +9,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-//시큐리티 설정에서 loginProcessingUrl("/login"); 에서 이 클래스가 발동
-// /login 요청이 오면 자동으로 UserDetailsService 타입으로 loc되어 있는 loadUserByUsername
+
+// 시큐리티 설정에서 loginProcessingUrl("/login"); 에서 이 클래스가 발동
+// UserDetailsService 인터페이스를 구현하는 클래스가 필요한 이유는 Spring Security에서 사용자 정보를 가져오는 방법(username을 통해서)을 사용자 정의하고, 인증 프로세스에 사용자 정보를 제공하기 위함
+// == 그래서 자연스럽게 사용자 이름은 절대 중복되서는 안됨.
 @Service
 public class PrincipalDetailsService implements UserDetailsService {
+
     @Autowired
     private UserRepository userRepository;
 

@@ -10,6 +10,10 @@ public class productDTO {
     private String description;
     private Integer price;
     private Integer category;
+    private String location;
+    private Boolean isUsed;
+    private Boolean isExchange;
+    private Integer quantity;
 
     public Product toEntity() {
         Product entity = new Product();
@@ -17,6 +21,10 @@ public class productDTO {
         entity.setDescription(description);
         entity.setPrice(price);
         entity.setCategory(category);
+        entity.setLocation(location);
+        entity.setIsExchange(isExchange);
+        entity.setIsUsed(isUsed);
+        entity.setQuantity(quantity);
         return entity;
     }
 }

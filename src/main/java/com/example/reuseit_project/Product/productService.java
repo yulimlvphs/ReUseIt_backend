@@ -20,7 +20,7 @@ public class productService {
 
     @Transactional
     public Product createProduct(MultipartFile file, productDTO productDTO) {
-        try { //여기부터
+        try {
             Product product = productDTO.toEntity();
             Product result = productRepository.save(product);
 
@@ -29,7 +29,7 @@ public class productService {
                 String contentType = file.getContentType();
                 byte[] data = file.getBytes();
                 String base64Data = Base64.getEncoder().encodeToString(data);
-                imageService.uploadImage(result.getId(), name, contentType, base64Data); //여기까지 image코드
+                imageService.uploadImage(result.getId(), name, contentType, base64Data);
             }
 
             return result;
@@ -54,7 +54,6 @@ public class productService {
                 String image = imageOptional.orElse("이미지가 없음");
 
                 dto.setImage(image);;
-
                 dtos.add(dto);
             }
 
@@ -97,7 +96,18 @@ public class productService {
         }
     }
 
-    public List<Product> getProductByCategory(Integer categoryId) { // 카테고리 별 상품제공 매소드
+    // 해당 상품 삭제
+    @Transactional
+    public void deleteProduct(Long id) {
+        try {
+            productRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to delete product: " + e.getMessage(), e);
+        }
+    }
+
+    // 카테고리 별 상품제공 매소드
+    public List<Product> getProductByCategory(Integer categoryId) {
         Assert.notNull(categoryId, "categoryId cannot be null");
 
         List<Product> products = productRepository.findAllByCategory(categoryId);
@@ -109,13 +119,4 @@ public class productService {
         return products;
     }
 
-    // 해당 상품 삭제
-    @Transactional
-    public void deleteProduct(Long id) {
-        try {
-            productRepository.deleteById(id);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to delete product: " + e.getMessage(), e);
-        }
-    }
 }
